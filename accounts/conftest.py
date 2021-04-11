@@ -1,3 +1,5 @@
+from typing import Dict, List, Any, Union
+
 import pytest
 
 from django.test import Client
@@ -6,14 +8,12 @@ from django.test import Client
 def create_user_dict(number, password, password2=None):
     if password2 is None:
         password2 = password
-    return {'data':
-                {'username': f'bear_{number}',
-                 f'first_name': f"John_{number}",
-                 'last_name': f'smith_{number}',
-                 'email': f'js_{number}@wp.pl'},
-            'passwords':
-                {'password': password,
-                 'password2': password2}
+    return {'data': {'username': f'bear_{number}',
+                     f'first_name': f"John_{number}",
+                     'last_name': f'smith_{number}',
+                     'email': f'js_{number}@wp.pl'},
+            'passwords': {'password': password,
+                          'password2': password2}
             }
 
 
