@@ -10,5 +10,6 @@ router.register(r'users', views.UserViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('registration', views.RegisterView.as_view(), name='registration'),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('auth/', include('djoser.urls.authtoken')),
 ]

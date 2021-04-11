@@ -1,7 +1,7 @@
 from typing import Dict, List, Any, Union
 
 import pytest
-
+from django.contrib.auth import get_user_model
 from django.test import Client
 
 
@@ -47,3 +47,14 @@ def user_password_to_short():
 @pytest.fixture
 def user_password_to_common():
     return create_user_dict(0, 'temporary')
+
+
+@pytest.fixture
+def user_with_password():
+    user_model = get_user_model()
+    password = 'temporary'
+    u = user_model.objects.create(**create_user_dict(1, password)['data'])
+    u.set_password(password)
+    u.save()
+    return (u, password)
+

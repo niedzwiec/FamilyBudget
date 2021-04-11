@@ -1,4 +1,5 @@
 import pytest
+
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
@@ -21,3 +22,26 @@ def test_user_registration_incorrect_password(client, user, result):
 
     assert response.status_code == 400
     assert response.data.serializer.errors['password'][0].code == result
+
+
+@pytest.mark.django_db
+def test_user_authorization(client, user_with_password):
+    user, password = user_with_password
+    data = {
+        'username': user.username,
+        'password': password
+    }
+    response = client.post(reverse('login'), data=data)
+    assert response.status_code == 200
+    assert 'auth_token' in response.data
+
+@pytest.mark.django_db
+def test_user_fail_authorization(client, user_with_password):
+    user, password = user_with_password
+    data = {
+        'username': user.username,
+        'password': ""
+    }
+    response = client.post(reverse('login'), data=data)
+    assert response.status_code == 400
+    assert response.data.serializer.errors['non_field_errors'][0].code == 'invalid_credentials'
